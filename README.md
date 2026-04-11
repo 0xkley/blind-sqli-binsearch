@@ -1,7 +1,29 @@
 # 🤖 - Blind-SQLi-BinSearch
-This is a script to make automated Blind Boolean SQL Injection attacks. The script uses the Binary Search algorithm to reduce the number of "trys" to get a character or value from a field.
-## Binary Search benefits
-When we're looking for the character of some field, we should compare that field with every character possible, for example:
+Automated Blind Boolean SQL Injection script that uses Binary Search to efficiently extract data from a vulnerable field.
+
+
+# 🚀 Overview
+This script automates data extraction in Blind Boolean SQL Injection scenarios by reducing the number of requests needed per character using a binary search approach.
+
+
+## ⚙️ What the script does
+- Extracts data from a vulnerable field using Blind Boolean SQL Injection
+- Uses binary search to reduce the number of requests per character
+- Automatically iterates over positions to reconstruct full values
+
+
+## 📈 Why this matters
+Without binary search:
+~95 requests per character
+
+With binary search:
+~7 requests per character
+
+This drastically reduces attack time and noise.
+
+## 🔎 How Binary Search improves extraction
+When extracting a character, a naive approach would compare it against every possible value:
+
 ```py
 character = 'M';
 character == 'a'; # false
@@ -11,38 +33,43 @@ character == 'A'; # false
 character == 'm'; # false
 character == 'M'; # true
 ```
-However, this can be tedious because we would need to compare every single character (and number if its necessary) manually with the field until we get the correct one, so the number of comparisons becomes much higher than when using binary search.
 
-Binary Search is an algorithm that split the range of 2 numbers **(example: 1 - 100 = 50)**, getting the "mid" (50) and comparing that mid the character.
+This is inefficient because it requires checking each possible character sequentially.
 
-For example, supose we want to find the character "M", whose ASCII code is **77**.
+## 💡 Binary Search approach
 
-The range would be: 32 - 126, as these are the ASCII codes for characters from *a-Z* and **0-9**.
+Instead of testing all values, we split the search space in half each time.
+For example, suppose we want to find the character 'M' (ASCII 77).
 
-If we assume the character is within the printable ASCII range, the search space would be: **32 - 126**
+We assume the value is within the printable ASCII range: **32 - 126**
 
-Binary search first calculates the midpoint: `(32 + 126) / 2 = 79`
+### Step 1: Calculate midpoint 
 
-Now we compare 79 with the target value 77:
+`(32 + 126) / 2 = 79`
 
-If the value is greater than 77, the character must be in the lower half of the range.
-If the value is less than 77, the character must be in the upper half of the range.
+### Step 2: Compare midpoint with target
 
-Since 79 > 77, we discard the upper half and keep the new range: **32 – 79**
+- If mid is higher than target (our case), this means we've gone beyond the valid search range, because the value is lower, so we reduce the range to mid - 1, not 126. So our range will be 32 - 78.
+- If mid is lower than target (for example, 75), this means we've gone below the target, so it doesn't make sense to keep searching in the lower values. Because of that, we move the start of the range to mid + 1. So the new range would be 76 - 126.
 
-We repeat the process:
+We repeat the process with our current range:
 
 ```py
-(32 + 79) / 2 = 55
+(32 + 78) / 2 = 55
 ```
 Now: *55 < 77*
 
-So the character must be in the upper half, and the new range becomes: **55 – 79**
+So the character must be in the upper half, and the new range becomes: **56 – 78**
 
 This process continues until the exact ASCII value is found.
 
 By repeatedly halving the search space, binary search drastically reduces the number of comparisons needed. Instead of testing every possible character sequentially, we can determine the correct value in log₂(n) steps, making the extraction process significantly faster.
 
+## 🧠 Concepts applied
+- Binary Search (algorithm optimization)
+- ASCII-based data extraction
+- Blind Boolean SQL Injection
+- HTTP request automation
 
 ## ⚠️ Disclaimer
 This script was developed specifically for the 
