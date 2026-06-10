@@ -1,18 +1,18 @@
-# 🤖 - Blind-SQLi-BinSearch
+# Blind-SQLi-BinSearch
 Automated Blind Boolean SQL Injection script that uses Binary Search to efficiently extract data from a vulnerable field.
 
 
-# 🚀 Overview
+# Overview
 This script automates data extraction in Blind Boolean SQL Injection scenarios by reducing the number of requests needed per character using a binary search approach.
 
 
-## ⚙️ What the script does
+## What the script does
 - Extracts data from a vulnerable field using Blind Boolean SQL Injection
 - Uses binary search to reduce the number of requests per character
 - Automatically iterates over positions to reconstruct full values
 
 
-## 📈 Why this matters
+## Why this matters
 Without binary search:
 ~95 requests per character
 
@@ -21,7 +21,7 @@ With binary search:
 
 This drastically reduces attack time and noise.
 
-## 🔎 How Binary Search improves extraction
+## How Binary Search improves extraction
 When extracting a character, a naive approach would compare it against every possible value:
 
 ```py
@@ -36,7 +36,7 @@ character == 'M'; # true
 
 This is inefficient because it requires checking each possible character sequentially.
 
-## 💡 Binary Search approach
+## Binary Search approach
 
 Instead of testing all values, we split the search space in half each time.
 For example, suppose we want to find the character 'M' (ASCII 77).
@@ -65,13 +65,13 @@ This process continues until the exact ASCII value is found.
 
 By repeatedly halving the search space, binary search drastically reduces the number of comparisons needed. Instead of testing every possible character sequentially, we can determine the correct value in log₂(n) steps, making the extraction process significantly faster.
 
-## 🧠 Concepts applied
+## Concepts applied
 - Binary Search (algorithm optimization)
 - ASCII-based data extraction
 - Blind Boolean SQL Injection
 - HTTP request automation
 
-## ⚠️ Disclaimer
+## Disclaimer
 This script was developed specifically for the 
 [PortSwigger Web Academy](https://portswigger.net/web-security) 
 Blind Boolean SQLi lab. This is not a general-purpose tool
